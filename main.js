@@ -2,9 +2,7 @@
 
 var div = document.createElement("div");
 div.id = "tabdiv";
-var container = document.getElementById("mw-content-text"); 
-
-console.log(container);
+var container = document.getElementById("mw-content-text");
 
 container.insertBefore(div, table1);
 
@@ -36,14 +34,14 @@ for(let i = 2; i < rows.length; i++) {
 }
 
 var svg = dimple.newSvg("#tabdiv", "100%", 450);
-    
-      var myChart = new dimple.chart(svg, data);
-      myChart.setBounds(30, 110, "90%", 305);
-      var x = myChart.addCategoryAxis("x", "years");
-      myChart.addMeasureAxis("y", "data");
-      myChart.addSeries("pays", dimple.plot.line);
-      myChart.addLegend(0, 10, "100%", 200);
-      myChart.draw();
+var myChart = new dimple.chart(svg, data);
+myChart.setBounds(30, 110, "90%", 305);
+var x = myChart.addCategoryAxis("x", ["years", "pays"]);
+var y = myChart.addMeasureAxis("y", "data");
+y.ticks = 15;
+myChart.addSeries("pays", dimple.plot.line);
+myChart.addLegend(10, 10, "100%", 200);
+myChart.draw();
 
 /* Table & Chart 2 */
 
@@ -51,14 +49,14 @@ var div = document.createElement("div");
 div.id = "tabdiv2";
 var container = document.getElementById("mw-content-text"); 
 
-console.log(container);
-
 container.insertBefore(div, table2);
 
 var data = [];
 var table = document.getElementById("table2");
-var years = table.getElementsByTagName("tr")[1].getElementsByTagName("th");
+var years = table.getElementsByTagName("tr")[0].getElementsByTagName("th");
 var yearsArray = [];
+
+console.log(yearsArray)
 
 for(let i = 2; i < years.length; i++) {
         let content = years[i].innerHTML;
@@ -81,12 +79,24 @@ for(let i = 2; i < rows.length; i++) {
 
         }
 }
+
+console.log(data)
     
-  var myChart = new dimple.chart(dimple.newSvg("#tabdiv2", "100%", 550), data);
-  myChart.setBounds(30, 180, "90%", 305);
-  var x = myChart.addCategoryAxis("x", "years");
-  myChart.addMeasureAxis("y", "data");
-  myChart.addSeries("pays", dimple.plot.line);
-  myChart.addLegend(0, 10, "100%", 200);
-  myChart.draw();
-    
+var myChart = new dimple.chart(dimple.newSvg("#tabdiv2", "100%", 550), data);
+myChart.setBounds(35, 180, "90%", 305);
+var x = myChart.addCategoryAxis("x", ["years", "pays"]);
+x.addOrderRule("years", false);
+var y = myChart.addMeasureAxis("y", "data");
+y.ticks = 15;
+myChart.addSeries("pays", dimple.plot.bar);
+myChart.addLegend(10, 10, "100%", 200);
+myChart.draw();
+
+/* Table & Chart 3 */
+
+
+
+
+
+
+
