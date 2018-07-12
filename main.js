@@ -94,6 +94,38 @@ myChart.draw();
 
 /* Table & Chart 3 */
 
+var div = document.createElement("div");
+div.id = "tabdiv3";
+var container = document.getElementById("content");
+
+container.insertBefore(div, bodyContent);
+
+var request = new XMLHttpRequest();
+request.open('GET', 'https://inside.becode.org/api/v1/data/random.json', true);
+
+request.onload = function() {
+  if (request.status >= 200 && request.status < 400) {
+    var data = JSON.parse(request.responseText);
+    console.log(data)
+  } 
+
+  else {
+
+  }
+};
+
+request.send();
+
+var myChart = new dimple.chart(dimple.newSvg("#tabdiv3", "100%", 550), data);
+myChart.setBounds(35, 180, "90%", 305);
+var x = myChart.addCategoryAxis("x", ["years", "pays"]);
+x.addOrderRule("years", false);
+var y = myChart.addMeasureAxis("y", "data");
+y.ticks = 15;
+myChart.addSeries("pays", dimple.plot.bar);
+myChart.addLegend(10, 10, "100%", 200);
+myChart.draw();
+
 
 
 
