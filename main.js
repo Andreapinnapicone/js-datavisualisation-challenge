@@ -11,12 +11,16 @@ var table = document.getElementById("table1");
 var years = table.getElementsByTagName("tr")[1].getElementsByTagName("th");
 var yearsArray = [];
 
+
+
 for(let i = 2; i < years.length; i++) {
         let content = years[i].innerHTML;
         yearsArray.push(content);
 }
 
 var rows = table.getElementsByTagName("tr");
+
+
 
 for(let i = 2; i < rows.length; i++) {
         let cells = rows[i].getElementsByTagName("td");
@@ -38,8 +42,9 @@ var myChart = new dimple.chart(svg, data);
 myChart.setBounds(30, 110, "90%", 305);
 var x = myChart.addCategoryAxis("x", ["years", "pays"]);
 var y = myChart.addMeasureAxis("y", "data");
-y.ticks = 15;
+y.ticks = 20;
 myChart.addSeries("pays", dimple.plot.line);
+myChart.addSeries("pays", dimple.plot.scatter);
 myChart.addLegend(10, 10, "100%", 200);
 myChart.draw();
 
@@ -89,6 +94,7 @@ x.addOrderRule("years", false);
 var y = myChart.addMeasureAxis("y", "data");
 y.ticks = 15;
 myChart.addSeries("pays", dimple.plot.bar);
+myChart.addSeries("pays", dimple.plot.scatter);
 myChart.addLegend(10, 10, "100%", 200);
 myChart.draw();
 
@@ -96,32 +102,75 @@ myChart.draw();
 
 var div = document.createElement("div");
 div.id = "tabdiv3";
+var bodyContent = document.getElementById("bodyContent");
 var container = document.getElementById("content");
 
-container.insertBefore(div, bodyContent);
 
+container.insertBefore(div, bodyContent);
+var myChart;
+var tab3 = [];
 var request = new XMLHttpRequest();
+
 request.open('GET', 'https://inside.becode.org/api/v1/data/random.json', true);
 
 request.onload = function() {
         
   if (request.status >= 200 && request.status < 400) {
     var data = JSON.parse(request.responseText);
-
     
-    console.log(data)
+  for(i = 0; i < data.length; i ++){
+    
+    let object = { 
+        "data1": parseInt(data[i][0]),
+        "data2": parseInt(data[i][1])
 
-    var myChart = new dimple.chart(dimple.newSvg("#tabdiv3", "100%", 550), data);
+    }
+
+    tab3.push(object)
+} 
+
+     myChart = new dimple.chart(dimple.newSvg("#tabdiv3", "100%", 550), tab3);
     myChart.setBounds(35, 180, "90%", 305);
-    var x = myChart.addCategoryAxis("x", ["years", "pays"]);
-    x.addOrderRule("years", false);
-    var y = myChart.addMeasureAxis("y", "data");
+    var x = myChart.addCategoryAxis("x", "data1");
+    x.addOrderRule("data1", false);
+    var y = myChart.addMeasureAxis("y", "data2");
     y.ticks = 15;
-    myChart.addSeries("pays", dimple.plot.bar);
-    myChart.addLegend(10, 10, "100%", 200);
+    myChart.addSeries(null, dimple.plot.bar);
+    myChart.addSeries(null, dimple.plot.scatter);
     myChart.draw();
+    updateChart()
   } 
 };
 
 request.send();
 
+
+function updateChart(){
+    request.open('GET', 'https://inside.becode.org/api/v1/data/random.json', true);
+    
+    request.onload = function() {
+        
+        if (request.status >= 200 && request.status < 400) {
+          var data = JSON.parse(request.responseText);
+          
+        for(i = 0; i < data.length; i ++){
+          
+          let object = { 
+              "data1": parseInt(data[i][0]),
+              "data2": parseInt(data[i][1])
+           }
+      
+        tab3.push(object)
+        }
+        console.log(tab3)  
+
+        myChart.data = tab3;
+        myChart.draw();
+        setTimeout(function(){updateChart()}, 1000);
+
+
+        }     
+    }
+    request.send()
+    
+}
