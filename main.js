@@ -130,7 +130,7 @@ request.onload = function() {
 } 
 
      myChart = new dimple.chart(dimple.newSvg("#tabdiv3", "100%", 550), tab3);
-    myChart.setBounds(35, 180, "90%", 305);
+    myChart.setBounds(35, 60, "90%", 450);
     var x = myChart.addCategoryAxis("x", "data1");
     x.addOrderRule("data1", false);
     var y = myChart.addMeasureAxis("y", "data2");
